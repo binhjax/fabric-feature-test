@@ -1,0 +1,19 @@
+[Unit]
+Description=Start Peer peer0 daemon
+
+[Service]
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=peer
+EnvironmentFile=/home/ewallet/loyalty_hyperledger/peer0/.env
+User=ewallet
+Group=ewallet
+Type=simple
+ExecStart=/bin/bash /home/ewallet/loyalty_hyperledger/peer0/start-peer-remote.sh
+Restart=on-failure
+RestartSec=10s
+RuntimeDirectory=peer
+WorkingDirectory=/home/ewallet/loyalty_hyperledger/peer0/
+
+[Install]
+WantedBy=multi-user.target

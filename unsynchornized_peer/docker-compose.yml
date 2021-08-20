@@ -1,0 +1,97 @@
+version: '2.1'
+
+services:
+   orderer0.org1.example.com:
+       image: ubuntu:18.04
+       hostname: orderer0
+       domainname: org1.example.com
+       ports:
+          - 7050:7050
+       volumes:
+           - ./data/network/org1/orderer0:/opt/hyperledger
+           - ./admin/bin:/opt/hyperledger/bin
+       working_dir: /opt/hyperledger/
+       command: /bin/bash -c  "./start-orderer.sh"
+       networks:
+         - loyalty_network
+   orderer1.org1.example.com:
+       image: ubuntu:18.04
+       hostname: orderer1
+       domainname: org1.example.com
+       ports:
+          - 8050:8050
+       volumes:
+           - ./data/network/org1/orderer1:/opt/hyperledger
+           - ./admin/bin:/opt/hyperledger/bin
+       working_dir: /opt/hyperledger/
+       command: /bin/bash -c  "./start-orderer.sh"
+       networks:
+         - loyalty_network
+   orderer2.org1.example.com:
+       image: ubuntu:18.04
+       hostname: orderer2
+       domainname: org1.example.com
+       ports:
+          - 9050:9050
+       volumes:
+           - ./data/network/org1/orderer2:/opt/hyperledger
+           - ./admin/bin:/opt/hyperledger/bin
+       working_dir: /opt/hyperledger/
+       command: /bin/bash -c  "./start-orderer.sh"
+       networks:
+         - loyalty_network
+   peer0.org1.example.com:
+       image: ubuntu:18.04
+       hostname: peer0
+       domainname: org1.example.com
+       ports:
+          - 7051:7051
+       volumes:
+           - ./data/network/org1/peer0:/opt/hyperledger
+           - ./admin/bin:/opt/hyperledger/bin
+           - /var/run/docker.sock:/var/run/docker.sock
+       working_dir: /opt/hyperledger/
+       command: /bin/bash -c  "./start-peers.sh"
+       networks:
+         - loyalty_network
+   peer1.org1.example.com:
+       image: ubuntu:18.04
+       hostname: peer1
+       domainname: org1.example.com
+       ports:
+          - 8051:8051
+       volumes:
+           - ./data/network/org1/peer1:/opt/hyperledger
+           - ./admin/bin:/opt/hyperledger/bin
+           - /var/run/docker.sock:/var/run/docker.sock
+       working_dir: /opt/hyperledger/
+       command: /bin/bash -c  "./start-peers.sh"
+       networks:
+         - loyalty_network
+   peer2.org1.example.com:
+       image: ubuntu:18.04
+       hostname: peer2
+       domainname: org1.example.com
+       ports:
+          - 9051:9051
+       volumes:
+           - ./data/network/org1/peer2:/opt/hyperledger
+           - ./admin/bin:/opt/hyperledger/bin
+           - /var/run/docker.sock:/var/run/docker.sock
+       working_dir: /opt/hyperledger/
+       command: /bin/bash -c  "./start-peers.sh"
+       networks:
+         - loyalty_network
+   admin:
+      image: golang
+      volumes:
+          - ./admin:/opt/hyperledger
+          - ./data:/var/data
+          - /var/run/docker.sock:/var/run/docker.sock
+      working_dir: /opt/hyperledger/
+      command: /bin/bash
+      networks:
+        - loyalty_network
+
+networks:
+  loyalty_network:
